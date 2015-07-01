@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>MotoL298N.h</itemPath>
+      <itemPath>Wheel.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -14,6 +15,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>MotoL298N.cpp</itemPath>
+      <itemPath>Wheel.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -61,6 +63,10 @@
       </item>
       <item path="MotoL298N.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Wheel.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Wheel.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
@@ -87,6 +93,10 @@
       <item path="MotoL298N.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="MotoL298N.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Wheel.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Wheel.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

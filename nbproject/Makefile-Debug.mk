@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/MotoL298N.o \
+	${OBJECTDIR}/Wheel.o \
 	${OBJECTDIR}/main.o
 
 
@@ -67,6 +68,11 @@ ${OBJECTDIR}/MotoL298N.o: MotoL298N.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -D_DEBUG -D_OS_LINUX_ -I/home/pi/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MotoL298N.o MotoL298N.cpp
+
+${OBJECTDIR}/Wheel.o: Wheel.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -D_DEBUG -D_OS_LINUX_ -I/home/pi/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Wheel.o Wheel.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
