@@ -12,16 +12,19 @@
 #include <wiringPi.h>
 #include "MotoL298N.h"
 #include "Wheel.h"
+#include "DHT11Reader.h"
 
 using namespace std;
 using namespace KGI_TW_Der_Utility;
 
 int TestWheel();
+int TestDHT11();
 /*
  * 
  */
 int main(int argc, char** argv) {
-    return TestWheel();
+    //return TestWheel();
+    return TestDHT11();
     
     DateTime now;
     std::string msg;
@@ -72,4 +75,20 @@ int TestWheel(){
                 break;
         }
     }
+}
+
+int TestDHT11(){
+    wiringPiSetup();
+    
+//    pinMode(27,OUTPUT);
+//    digitalWrite( 27, HIGH );
+//    delay(1000);
+//    digitalWrite( 27, LOW );
+    
+    DHT11Reader dht11(27);
+    for( int i = 1; i < 6; ++i ){
+        dht11.Read();
+        delay(3000);
+    }
+    return 0;
 }

@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/DHT11Reader.o \
 	${OBJECTDIR}/MotoL298N.o \
 	${OBJECTDIR}/Wheel.o \
 	${OBJECTDIR}/main.o
@@ -63,6 +64,11 @@ LDLIBSOPTIONS=-L/home/pi/lib -lwiringPi -lutility
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/automoto: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/automoto ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/DHT11Reader.o: DHT11Reader.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -D_DEBUG -D_OS_LINUX_ -I/home/pi/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DHT11Reader.o DHT11Reader.cpp
 
 ${OBJECTDIR}/MotoL298N.o: MotoL298N.cpp 
 	${MKDIR} -p ${OBJECTDIR}
