@@ -7,12 +7,16 @@
 
 #include "Wheel.h"
 #include <wiringPi.h>
+#include <thread>
 
 Wheel::Wheel(int forward, int backward, int pwm) : m_PinForward(forward), m_PinBackward(backward), m_PinPWM(pwm) {
     pinMode( m_PinForward, OUTPUT );
     pinMode( m_PinBackward, OUTPUT );
     pinMode( m_PinPWM, OUTPUT );
     m_CrtSpeed = 0;
+    m_IsStopPWM = false;
+    std::thread tPWM( std::bind(&Wheel::PWMOutput, this) );
+    tPWM.detach();
 }
 
 Wheel::Wheel(const Wheel& orig) {
@@ -20,6 +24,8 @@ Wheel::Wheel(const Wheel& orig) {
 }
 
 Wheel::~Wheel() {
+    m_IsStopPWM = true;
+    m_EventPWM.Set(true);
 }
 
 Wheel& Wheel::operator=( const Wheel& orig ){
@@ -32,9 +38,10 @@ Wheel& Wheel::operator=( const Wheel& orig ){
 }
 
 void Wheel::Stop(){
+    m_CrtSpeed = 0;
     digitalWrite( m_PinForward, LOW );
     digitalWrite( m_PinBackward, LOW );
-    digitalWrite( m_PinPWM, LOW );
+    digitalWrite( m_PinPWM, LOW );    
 }
     
 void Wheel::Forward( int speed ){
@@ -76,7 +83,7 @@ void Wheel::Break(){
 
 void Wheel::PWMOutput(){
     m_EventPWM.Reset();
-    while(true){
+    while(!m_IsStopPWM){
         if( m_CrtSpeed <= 0 ){
             m_EventPWM.Wait(0);
         }else{
@@ -85,7 +92,10 @@ void Wheel::PWMOutput(){
             delay(delayMs);
             digitalWrite( m_PinPWM, LOW );
             delay(delayMs);
+            //printf( "PWMOutput ...\r\n" );
         }
+        
+        m_EventPWM.Reset();
     }
     
 }

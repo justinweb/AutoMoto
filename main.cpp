@@ -6,6 +6,7 @@
  */
 
 #include <cstdlib>
+#include <thread>
 #include <Utility/Log/LogSystem.h>
 #include <Utility/DateTime.h>
 #include <Utility/StringTemplateUtil.h>
@@ -19,12 +20,50 @@ using namespace KGI_TW_Der_Utility;
 
 int TestWheel();
 int TestDHT11();
+
+int g_Level = 1;
+int g_OrgLevel = 0;
+void PWMThread(){
+    int onTime,offTime;
+    while(true){
+        if( g_Level != g_OrgLevel ){
+            onTime = g_Level * 1200;
+            offTime = (10 - g_Level) * 1200;
+            g_OrgLevel = g_Level;
+        }
+        
+        digitalWrite( 29, HIGH );
+        delayMicroseconds(onTime);
+        digitalWrite( 29, LOW );
+        delayMicroseconds(offTime);
+    }
+}
+
+int SoftwarePWM(){
+    wiringPiSetup();
+    pinMode( 29, OUTPUT );
+    
+    digitalWrite( 29, HIGH );
+    delay(3000);
+    digitalWrite( 29, LOW );
+    
+    std::thread tPWM( &PWMThread );
+    tPWM.detach();
+    
+    for( int i = 1; i < 1000; ++i ){
+        g_Level = i % 10;
+        delay(2000);
+        printf( "Level = %d\r\n", g_Level );
+    }
+}
 /*
  * 
  */
 int main(int argc, char** argv) {
     //return TestWheel();
-    return TestDHT11();
+    //return TestDHT11();
+    SoftwarePWM();
+    return 0;
     
     DateTime now;
     std::string msg;
@@ -37,7 +76,8 @@ int main(int argc, char** argv) {
 int TestWheel(){
     //wiringPiSetupSys();
     wiringPiSetup();
-    Wheel wheel( 27,28,29 );
+    Wheel wheelRear( 27,28,29 );
+    Wheel wheelFront( 5,6, 29 );
     bool isStop = false;
     char speed;
     while(!isStop){
@@ -56,10 +96,12 @@ int TestWheel(){
                 if( speed >= '0' && speed < '9' ){
                     switch( c ){
                         case 'f':
-                            wheel.Forward( speed - 0x30 );
+                            wheelRear.Forward( speed - 0x30 );
+                            wheelFront.Forward( speed - 0x30 );
                             break;
                         case 'b':
-                            wheel.Backward( speed - 0x30 );
+                            wheelRear.Backward( speed - 0x30 );
+                            wheelFront.Backward( speed - 0x30 );
                             break;
                     }
                 }else{
@@ -68,7 +110,8 @@ int TestWheel(){
             }
             break;
             case 's':
-                wheel.Stop();
+                wheelRear.Stop();
+                wheelFront.Stop();
                 break;
             case 'q':     
                 isStop = true;
