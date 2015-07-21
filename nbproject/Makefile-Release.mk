@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/DHT11Reader.o \
 	${OBJECTDIR}/MotoL298N.o \
+	${OBJECTDIR}/SoftwarePWM.o \
 	${OBJECTDIR}/Wheel.o \
 	${OBJECTDIR}/main.o
 
@@ -74,6 +75,11 @@ ${OBJECTDIR}/MotoL298N.o: MotoL298N.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MotoL298N.o MotoL298N.cpp
+
+${OBJECTDIR}/SoftwarePWM.o: SoftwarePWM.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/SoftwarePWM.o SoftwarePWM.cpp
 
 ${OBJECTDIR}/Wheel.o: Wheel.cpp 
 	${MKDIR} -p ${OBJECTDIR}

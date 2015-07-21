@@ -14,6 +14,7 @@
 #include "MotoL298N.h"
 #include "Wheel.h"
 #include "DHT11Reader.h"
+#include "SoftwarePWM.h"
 
 using namespace std;
 using namespace KGI_TW_Der_Utility;
@@ -39,7 +40,7 @@ void PWMThread(){
     }
 }
 
-int SoftwarePWM(){
+int TestSoftwarePWM(){
     wiringPiSetup();
     pinMode( 29, OUTPUT );
     
@@ -47,14 +48,24 @@ int SoftwarePWM(){
     delay(3000);
     digitalWrite( 29, LOW );
     
-    std::thread tPWM( &PWMThread );
-    tPWM.detach();
+    SoftwarePWM sPWM(29);
+    sPWM.Start();
     
     for( int i = 1; i < 1000; ++i ){
-        g_Level = i % 10;
+        sPWM.SetLevel( i % 10 );
         delay(2000);
-        printf( "Level = %d\r\n", g_Level );
+        printf( "Level = %d\r\n", sPWM.GetLevel() );
     }
+    
+    sPWM.Stop();
+//    std::thread tPWM( &PWMThread );
+//    tPWM.detach();
+//    
+//    for( int i = 1; i < 1000; ++i ){
+//        g_Level = i % 10;
+//        delay(2000);
+//        printf( "Level = %d\r\n", g_Level );
+//    }
 }
 /*
  * 
@@ -62,7 +73,7 @@ int SoftwarePWM(){
 int main(int argc, char** argv) {
     //return TestWheel();
     //return TestDHT11();
-    SoftwarePWM();
+    TestSoftwarePWM();
     return 0;
     
     DateTime now;
